@@ -1,0 +1,3 @@
+/Users/henockdinberu/CLionProjects/miniDetector/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/henockdinberu/CLionProjects/miniDetector/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/henockdinberu/CLionProjects/miniDetector/cmake-build-debug/CMakeFiles/miniDetector.dir
