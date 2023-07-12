@@ -1,4 +1,4 @@
-# Install script for directory: /Users/henockdinberu/CLionProjects/miniDetector
+# Install script for directory: /Users/henockdinberu/projects/CLionProjects/miniDetector
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/henockdinberu/CLionProjects/miniDetector/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/henockdinberu/projects/CLionProjects/miniDetector/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
