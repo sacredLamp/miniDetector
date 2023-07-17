@@ -1,3 +1,3 @@
-/Users/henockdinberu/projects/CLionProjects/miniDetector/cmake-build-debug/CMakeFiles/miniDetector.dir
-/Users/henockdinberu/projects/CLionProjects/miniDetector/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/henockdinberu/projects/CLionProjects/miniDetector/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/henoc/projects/git/miniDetector/cmake-build-debug/CMakeFiles/miniDetector.dir
+C:/Users/henoc/projects/git/miniDetector/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/henoc/projects/git/miniDetector/cmake-build-debug/CMakeFiles/rebuild_cache.dir

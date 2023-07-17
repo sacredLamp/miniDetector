@@ -4,25 +4,37 @@
 
 void start();
 
+void clear(){
+#ifdef _WIN32
+    std::system("cls");
+#elif __unix__
+    std::system("clear");
+#endif
+}
+
 void ping(std::string& input){
 
     std::cout << "Pinging " << input << "...\n";
+#ifdef _WIN32
+    std::string cmd("ping " + input + " -n 1");
+#elif __unix__
     std::string cmd("ping " + input + " -c 1");
+#endif
 
     if(!std::system(cmd.c_str())) {
-        std::system("clear");
+        clear();
         std::cout << "Website is up and running! ::\n";
     }
 
     else{
-        std::system("clear");
+        clear();
         std::cout << "This webpage / server seems to be DOWN ::\n";
     }
 
 }
 
 void testPage(){
-    std::system("clear");
+    clear();
     std::string input;
     std::cout << "Enter website IP / URL ::\n";
 
@@ -42,7 +54,7 @@ void testPage(){
 }
 
 bool checkFileExists(std::fstream &file){
-    file.open("saved.txt", std::ios::in);
+    file.open("saved.txt", std::ios::out);
     if(!file) {
         std::cout << "File could not be created\n";
         return false;
@@ -68,12 +80,11 @@ bool inFile(std::fstream &file, std::string &needle) {
     file.open("saved.txt", std::ios::in);
     if(file.is_open()) {
         //std::cout << "File is open ::\n";
-
         readPages(file);
-
         while (getline(file, line)) {
             if (line == needle) {
                 std::cout << "Connection is already saved ::\n\n";
+                file.close();
                 return false;
             }
         }
@@ -89,7 +100,7 @@ bool inFile(std::fstream &file, std::string &needle) {
 }
 
 void addPages(std::fstream& file){
-    std::system("clear");
+    clear();
     std::string input;
 
     if (checkFileExists(file)) {
@@ -118,10 +129,10 @@ void addPages(std::fstream& file){
 
 
 void start(){
-    std::fstream my_file;
+    clear();
 
-    std::system("clear");
-    char choice;
+    std::fstream my_file;
+    char choice = 0;
 
     std::cout << "Welcome!\nInput your desired choice. ::\n";
     std::cout << "1 -> Add Webpages ::\n";
