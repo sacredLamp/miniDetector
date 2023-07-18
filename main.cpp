@@ -68,19 +68,22 @@ bool checkFileExists(std::fstream &file){
 }
 
 void readPages(std::fstream& file){
+    file.open("saved.txt", std::ios::in);
     std::string line;
     std::cout << "File: \n";
     while(getline(file, line)){
         std::cout << line << "\n";
     }
+    file.close();
 }
 
 bool inFile(std::fstream &file, std::string &needle) {
     std::string line;
+
+    //readPages(file);
+        //std::cout << "File is open ::\n";
     file.open("saved.txt", std::ios::in);
     if(file.is_open()) {
-        //std::cout << "File is open ::\n";
-        readPages(file);
         while (getline(file, line)) {
             if (line == needle) {
                 std::cout << "Connection is already saved ::\n\n";
