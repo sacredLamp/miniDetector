@@ -17,7 +17,7 @@ void ping(std::string& input){
     std::cout << "Pinging " << input << "...\n";
 #ifdef _WIN32
     std::string cmd("ping " + input + " -n 1");
-#elif __unix__
+#elif __APPLE__
     std::string cmd("ping " + input + " -c 1");
 #endif
 
