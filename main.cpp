@@ -1,13 +1,15 @@
 #include <iostream>
 #include <algorithm>
 #include <fstream>
+#include <vector>
+#include <filesystem>
 
 void start();
 
 void clear(){
 #ifdef _WIN32
     std::system("cls");
-#elif __unix__
+#elif __APPLE__
     std::system("clear");
 #endif
 }
@@ -44,13 +46,15 @@ void testPage(){
         if(input == "q")
             break;
 
-        ping(input);
+        if(ping(input))
+            std::cout << "Website is up and running! ::\n";
+        else
+            std::cout << "This webpage / server seems to be DOWN ::\n";
 
         std::cout << "\nEnter 'q' to quit or enter another IP/URL ::\n\n";
 
     }
 
-    start();
 }
 
 bool checkFileExists(std::fstream &file){
@@ -82,7 +86,6 @@ void readPages(std::fstream& file){
     while(input != "q") {
         std::cin >> input;
     }
-    start();
 }
 
 bool inFile(std::fstream &file, std::string &needle) {
@@ -90,7 +93,7 @@ bool inFile(std::fstream &file, std::string &needle) {
 
     //readPages(file);
         //std::cout << "File is open ::\n";
-    file.open("saved.txt", std::ios::in);
+    file.open("saved.txt", std::fstream::in);
     if(file.is_open()) {
         while (getline(file, line)) {
             if (line == needle) {
@@ -107,7 +110,6 @@ bool inFile(std::fstream &file, std::string &needle) {
         return false;
     }
 
-//return true;
 }
 
 void addPages(std::fstream& file){
@@ -135,51 +137,66 @@ void addPages(std::fstream& file){
         }
     }
 
-    start();
 }
 
 void runSaved(std::fstream& file){
+    std::string input;
     std::cout << "Running SAVED URLs...\n";
     std::string line;
-    uint32_t success = 0, fail = 0;
+    std::vector<std::string> success, fail;
     file.open("saved.txt", std::ios::in);
     if(file.is_open()){
         while(getline(file, line)){
             if(ping(line))
-                success++;
+                success.push_back(line);
             else
-                fail++;
+                fail.push_back(line);
         }
     }
     clear();
     std::cout << "Completed! ::\n";
-    std::cout << "Succeeded: " << success << "\n";
-    std::cout << "Failed: " << fail << "\n";
+    std::cout << "Succeeded: " << success.size() << "\n";
+    for(auto &l: success){
+        std::cout << "\t" << l << "\n";
+    }
+
+    std::cout << "Failed: " << fail.size() << "\n";
+    for(auto &l : fail){
+        std::cout << "\t" << l << "\n";
+    }
+
+    std::cout << "Enter \'q\' to exit. ::\n";
+    while(input != "q") {
+        std::cin >> input;
+    }
+    //start();
+}
+
+void launch(std::fstream& file){
+    std::cout << "hi";
 }
 
 
-void start(){
-    clear();
+void start(std::fstream& file){
 
-    std::fstream my_file;
     char choice = 0;
 
-    std::cout << "Welcome!\nInput your desired choice. ::\n";
-    std::cout << "1 -> Add Webpages ::\n";
-    std::cout << "2 -> View Saved ::\n";
-    std::cout << "3 -> Test a Page ::\n";
-    std::cout << "4 -> Run Saved Servers ::\n";
-    std::cout << "q -> Exit ::\n";
-
     while(choice != 'q') {
+        clear();
+        std::cout << "Welcome!\nInput your desired choice. ::\n";
+        std::cout << "1 -> Add Webpages ::\n";
+        std::cout << "2 -> View Saved ::\n";
+        std::cout << "3 -> Test a Page ::\n";
+        std::cout << "4 -> Run Saved Servers ::\n";
+        std::cout << "q -> Exit ::\n";
         std::cin >> choice;
         switch(choice){
             case '1':
-                addPages(my_file);
+                addPages(file);
                 break;
 
             case '2':
-                readPages(my_file);
+                readPages(file);
                 break;
 
             case '3':
@@ -187,7 +204,7 @@ void start(){
                 break;
 
             case '4':
-                runSaved(my_file);
+                runSaved(file);
                 break;
 
             case 'q':
@@ -202,11 +219,14 @@ void start(){
     }
 }
 
-void run(){
-    start();
+void run(std::fstream& file){
+
+    //launch();
+    start(file);
 }
 
 int main() {
-    run();
+    std::fstream file;
+    run(file);
     return 0;
 }
