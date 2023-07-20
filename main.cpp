@@ -1,7 +1,7 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
 #include "File.h"
+#include <iostream>
+#include <vector>
+
 
 void clear(){
 #ifdef _WIN32
@@ -66,17 +66,18 @@ void runSaved(std::fstream& file){
         }
     }
     file.close();
-    if(success.empty() and fail.empty())
+    // Python?!?!?!!
+    if(success.empty() && fail.empty())
         return;
     clear();
     std::cout << "Completed! ::\n";
     std::cout << "Succeeded: " << success.size() << "\n";
-    for(auto &l: success){
+    for(const std::string &l: success){
         std::cout << "\t" << l << "\n";
     }
 
     std::cout << "Failed: " << fail.size() << "\n";
-    for(auto &l : fail){
+    for(const std::string &l : fail){
         std::cout << "\t" << l << "\n";
     }
 

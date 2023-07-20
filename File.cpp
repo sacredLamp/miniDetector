@@ -7,10 +7,8 @@
 #include <utility>
 #include <vector>
 
-
-File::File(std::string name) {
-    this->name = std::move(name);
-}
+// Constructor
+File::File(std::string fileName) : name(std::move(fileName)) {}
 
 bool File::checkFileExists(){
     this->file.open("saved.txt");
@@ -52,7 +50,7 @@ bool File::inFile(std::string &needle) {
     file.open("saved.txt", std::fstream::in);
     if(file.is_open()) {
         while (getline(file, line)) {
-            if (line == needle) {
+            if (line.compare(needle) != 0) {
                 std::cout << "Connection is already saved ::\n\n";
                 file.close();
                 return false;
@@ -77,7 +75,7 @@ void File::addPages(){
     std::string input;
 
     if (checkFileExists()) {
-        while (input != "q") {
+        while (input.compare("q") != 0) {
             std::cout << "Input connection to save ::\n";
             std::cin >> input;
 
