@@ -1,10 +1,12 @@
 # miniDetector
 A "down detector" but scaled down to terminal.
+
 miniDetector is a CLI application that allows you to check whether websites, databases, and services are currently online or unavailable, without having to browse the web for each one individually.
-Chosen data is then saved into a `.txt` file, and saved so that on the next start-up, your list of sites remains intact. 
+
+Added data is then saved into a `.txt` file, and saved so that on the next start-up, your list of sites remains intact. 
 
 
-## Goal
+## Goal:
 The goal is to create a scaled-down version of DownDetector in order to practice techniques that can be applied to the future project, without having to worry about UI elements. 
 
 ## Current Features:
@@ -17,6 +19,6 @@ The goal is to create a scaled-down version of DownDetector in order to practice
 
 - [x]  A favorites / saved list of sites, which persists even on program restart
     - [x]  Creates && writes to a `.txt` file in the directory to store saved data
-    - [ ]  Runs the list automatically on code start-up (?)
+    - [x]  Runs the list automatically on code start-up
 - [x]  Users can manually input IPs for pinging
 - [x]  Users can run list of saved sites and see which ones are online/offline

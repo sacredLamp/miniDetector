@@ -3,4 +3,4 @@ project(miniDetector)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(miniDetector main.cpp)
+add_executable(miniDetector main.cpp File.h File.cpp)

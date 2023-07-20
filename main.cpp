@@ -1,9 +1,7 @@
 #include <iostream>
-#include <algorithm>
 #include <fstream>
 #include <vector>
-
-void start(std::fstream& file);
+#include "File.h"
 
 void clear(){
 #ifdef _WIN32
@@ -22,15 +20,10 @@ bool ping(std::string& input){
     std::string cmd("ping " + input + " -c 1");
 #endif
 
-    if(!std::system(cmd.c_str())) {
-        //std::cout << "Website is up and running! ::\n";
+    if(!std::system(cmd.c_str()))
         return true;
-    }
-
-    else{
-        //std::cout << "This webpage / server seems to be DOWN ::\n";
+    else
         return false;
-    }
 
 }
 
@@ -56,86 +49,6 @@ void testPage(){
 
 }
 
-bool checkFileExists(std::fstream &file){
-    file.open("saved.txt");
-    if(!file) {
-        std::cout << "File could not be created\n";
-        return false;
-    }
-    else{
-        //std::cout << "File created successfully\n";
-        file.close();
-        return true;
-    }
-
-}
-
-void readPages(std::fstream& file){
-    clear();
-    std::string input;
-
-    file.open("saved.txt", std::ios::in);
-    std::string line;
-    std::cout << "File: \n";
-    while (getline(file, line)) {
-        std::cout << line << "\n";
-    }
-    file.close();
-    std::cout << "Enter \'q\' to exit. ::\n";
-    while(input != "q") {
-        std::cin >> input;
-    }
-}
-
-bool inFile(std::fstream &file, std::string &needle) {
-    std::string line;
-
-    //readPages(file);
-        //std::cout << "File is open ::\n";
-    file.open("saved.txt", std::fstream::in);
-    if(file.is_open()) {
-        while (getline(file, line)) {
-            if (line == needle) {
-                std::cout << "Connection is already saved ::\n\n";
-                file.close();
-                return false;
-            }
-        }
-        file.close();
-        return true;
-    }
-    else{
-        std::cout << "File is not open ::\n";
-        return false;
-    }
-
-}
-
-void addPages(std::fstream& file){
-    clear();
-    std::string input;
-
-    if (checkFileExists(file)) {
-        while (input != "q") {
-            std::cout << "Input connection to save ::\n";
-            std::cin >> input;
-
-            if (input == "q") {
-                break;
-            }
-            if (inFile(file, input)) {
-                file.open("saved.txt", std::ios::app);
-                std::cout << "Adding to list...\n";
-                file << input << "\n";
-                std::cout << "Connection added! ::\n\n";
-                file.close();
-            }
-
-        }
-    }
-
-}
-
 void runSaved(std::fstream& file){
     std::string input;
     std::cout << "Running SAVED URLs...\n";
@@ -153,9 +66,9 @@ void runSaved(std::fstream& file){
         }
     }
     file.close();
-    clear();
     if(success.empty() and fail.empty())
-        start(file);
+        return;
+    clear();
     std::cout << "Completed! ::\n";
     std::cout << "Succeeded: " << success.size() << "\n";
     for(auto &l: success){
@@ -174,21 +87,13 @@ void runSaved(std::fstream& file){
 
 }
 
-void launch(std::fstream& file){
-    if(checkFileExists(file)){
-        runSaved(file);
+void launch(File& file){
+    if(file.checkFileExists()){
+        runSaved(file.file);
     }
 }
 
-void clearFile(std::fstream& file){
-    if(checkFileExists(file)){
-        file.open("saved.txt", std::ios::out | std::ios::trunc);
-        file.close();
-    }
-}
-
-
-void start(std::fstream& file){
+void start(File& file){
     char choice = 0;
 
     while(choice != 'q') {
@@ -203,23 +108,27 @@ void start(std::fstream& file){
         std::cin >> choice;
         switch(choice){
             case '1':
-                addPages(file);
+                file.addPages();
+                clear();
                 break;
 
             case '2':
-                readPages(file);
+                file.readFile();
+                clear();
                 break;
 
             case '3':
                 testPage();
+                clear();
                 break;
 
             case '4':
-                runSaved(file);
+                runSaved(file.file);
+                clear();
                 break;
 
             case '5':
-                clearFile(file);
+                file.clearFile();
                 break;
 
             case 'q':
@@ -234,13 +143,14 @@ void start(std::fstream& file){
     }
 }
 
-void run(std::fstream& file){
+void run(File& file){
     launch(file);
     start(file);
 }
 
 int main() {
-    std::fstream file;
-    run(file);
+    File saved("saved.txt");
+
+    run(saved);
     return 0;
 }
