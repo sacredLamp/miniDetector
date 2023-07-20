@@ -2,9 +2,8 @@
 #include <algorithm>
 #include <fstream>
 #include <vector>
-#include <filesystem>
 
-void start();
+void start(std::fstream& file);
 
 void clear(){
 #ifdef _WIN32
@@ -124,8 +123,6 @@ void addPages(std::fstream& file){
             if (input == "q") {
                 break;
             }
-
-            //file.open("saved.txt", std::ios::in | std::ios::out | std::ios::app);
             if (inFile(file, input)) {
                 file.open("saved.txt", std::ios::app);
                 std::cout << "Adding to list...\n";
@@ -146,14 +143,19 @@ void runSaved(std::fstream& file){
     std::vector<std::string> success, fail;
     file.open("saved.txt", std::ios::in);
     if(file.is_open()){
-        while(getline(file, line)){
-            if(ping(line))
-                success.push_back(line);
-            else
-                fail.push_back(line);
+        while(getline(file, line)) {
+            if (!line.empty()) {
+                if (ping(line))
+                    success.push_back(line);
+                else
+                    fail.push_back(line);
+            }
         }
     }
+    file.close();
     clear();
+    if(success.empty() and fail.empty())
+        start(file);
     std::cout << "Completed! ::\n";
     std::cout << "Succeeded: " << success.size() << "\n";
     for(auto &l: success){
@@ -169,16 +171,24 @@ void runSaved(std::fstream& file){
     while(input != "q") {
         std::cin >> input;
     }
-    //start();
+
 }
 
 void launch(std::fstream& file){
-    std::cout << "hi";
+    if(checkFileExists(file)){
+        runSaved(file);
+    }
+}
+
+void clearFile(std::fstream& file){
+    if(checkFileExists(file)){
+        file.open("saved.txt", std::ios::out | std::ios::trunc);
+        file.close();
+    }
 }
 
 
 void start(std::fstream& file){
-
     char choice = 0;
 
     while(choice != 'q') {
@@ -188,6 +198,7 @@ void start(std::fstream& file){
         std::cout << "2 -> View Saved ::\n";
         std::cout << "3 -> Test a Page ::\n";
         std::cout << "4 -> Run Saved Servers ::\n";
+        std::cout << "5 -> Clear Saved ::\n";
         std::cout << "q -> Exit ::\n";
         std::cin >> choice;
         switch(choice){
@@ -207,6 +218,10 @@ void start(std::fstream& file){
                 runSaved(file);
                 break;
 
+            case '5':
+                clearFile(file);
+                break;
+
             case 'q':
                 std::cout << "Exit ::\n";
                 exit(0);
@@ -220,8 +235,7 @@ void start(std::fstream& file){
 }
 
 void run(std::fstream& file){
-
-    //launch();
+    launch(file);
     start(file);
 }
 
